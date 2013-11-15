@@ -4,6 +4,7 @@ import sys, traceback
 import hashlib
 
 from depot.raspberrypi.automation import message
+
 from BoardController import BoardController
 from OutletController import OutletController
 from RGBController import RGBController
@@ -37,7 +38,7 @@ class Server(object):
                                     ssl_version = ssl.PROTOCOL_TLSv1)
 
             try:
-                msg = message.recieveOverSocket(self.__conn)
+                msg = message.RecieveOverSocket(self.__conn)
                 self.handleCurrentMessage(msg)
             except:
                 print "An error occurred"
@@ -50,7 +51,7 @@ class Server(object):
             This method distributes the types of messages to be handled
         """
         h = "71f30df563d16be28f301c845e02bd4c501b3219b2fa4fe6f3a659e9a94f84e7"
-        if hashlib.sha256(msg.getPassword()).hexdigest() != h:
+        if hashlib.sha256(msg.GetPassword()).hexdigest() != h:
             print "Authentication failed"
             return
 
@@ -148,7 +149,7 @@ class Server(object):
         
 
 
-s = Server('', 14026)
+s = Server('', 14025)
 bc = BoardController("The Birdhouse")
 bc.addController(OutletController(12, "Outlet 3"))
 bc.addController(OutletController(16, "Outlet 4"))
