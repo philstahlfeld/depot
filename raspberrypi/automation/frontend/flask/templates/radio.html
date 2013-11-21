@@ -1,0 +1,25 @@
+<table>
+  <tr>
+    <td>
+      <img src="{{ radio_info.coverart_url }}" height="75px">
+    </td>
+    <td>
+      <b>{{ radio_info.song }}</b> <br>
+      {{ radio_info.artist }} <br>
+      {{ radio_info.album }} <br>
+    </td>
+  </tr>
+</table>
+
+<table><tr><td>
+<form action='{{ radio_action_url }}' method='POST'>
+  <input type='hidden' name='action' value='play'>
+  <input type='Submit' value='Play'>
+</form>
+</td><td>
+<form action='{{ radio_action_url }}' method='POST'>
+  <input type='hidden' name='action' value='next'>
+  <input type='Submit' value='=>'>
+</form>
+</td></tr>
+</table>
