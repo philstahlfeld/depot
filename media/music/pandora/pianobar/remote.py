@@ -5,6 +5,7 @@ from depot.media.music.pandora.pianobar import radio_info
 
 def Start():
   if not radio_info.PianobarIsRunning():
+    _RemoveInfo()
     os.system(config.STARTER_PATH)
 
 def Stop():
@@ -13,7 +14,12 @@ def Stop():
 def Play():
   _WriteToCtl('p')
 
+def Next():
+  _RemoveInfo()
+  _WriteToCtl('n')
+
 def SwitchStation(station_number):
+  _RemoveInfo()
   _WriteToCtl('s')
   _WriteToCtl(station_number + '\n')
 
@@ -21,3 +27,6 @@ def SwitchStation(station_number):
 def _WriteToCtl(msg):
   with open(config.CTL_PATH, 'w') as ctl:
     ctl.write(msg)
+
+def _RemoveInfo():
+  os.system('rm %s' % config.INFO_PATH)

@@ -2,11 +2,21 @@
 <html>
 <head>
 <title>Control Panel</title>
+<script>
+  function loadRadioHtml() {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function(){
+      document.getElementById('{{ div }}').innerHTML = request.responseText;
+    }
+    request.open('GET', '{{ radio_path }}', true);
+    request.send();
+  }
+</script>
 </head>
-<body>
-{% block body %}
-
-{% endblock %}
+<body onload='loadRadioHtml()'>
+<div id='{{ div }}'>
+  Loading radio...
+</div>
 </body>
 </html>
 

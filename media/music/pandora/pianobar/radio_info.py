@@ -3,9 +3,14 @@ import os
 import re
 import sys
 
-CONFIG_DIR_PATH = os.path.expanduser('/home/philstahlfeld/.config/pianobar/')
-CTL_PATH = CONFIG_DIR_PATH + 'ctl'
-INFO_PATH = CONFIG_DIR_PATH + 'info'
+from depot.media.music.pandora.pianobar import config
+
+
+def GetCurrentRadioInfo():
+  try:
+    return RadioInfoFileStore.LoadFromFile(config.INFO_PATH)
+  except:
+    return None
 
 def UpdateInfoFromEvent(event_action):
   """ Updates info file based on pianobar event and event info (from stdin) """
@@ -33,7 +38,7 @@ def UpdateInfoFromEvent(event_action):
         station = line.split('=')[1]
         radio_info.AddStation(station)
 
-    radio_info.SaveToFile(INFO_PATH)
+    radio_info.SaveToFile(config.INFO_PATH)
 
 
 class RadioInfoFileStore(object):
@@ -57,3 +62,17 @@ class RadioInfoFileStore(object):
   def LoadFromFile(file_name):
     with open(file_name, 'r') as store:
       return pickle.load(store)
+
+  def __eq__(self, other):
+    return (self.song == other.song and 
+            self.artist == other.artist and
+            self.album == other.album and 
+            self.coverart_url == other.coverart_url and
+            self.station == other.station)
+
+  def __ne__(self, other):
+    return not self.__eq__(other)
+
+def PianobarIsRunning():
+  l = os.popen('ps -ef | grep pianobar').read().split('\n')
+  return len(l) > 3
