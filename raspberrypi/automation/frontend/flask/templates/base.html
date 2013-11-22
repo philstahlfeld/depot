@@ -1,22 +1,41 @@
 <!doctype html>
 <html>
 <head>
+<meta content="width=300px" name="viewport">
 <title>Control Panel</title>
 <script>
+  function loadPageData(){
+    loadRadioHtml();
+    setTimeout(function(){loadPageData();}, 10000);
+  }
   function loadRadioHtml() {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function(){
-      document.getElementById('{{ div }}').innerHTML = request.responseText;
+      if(request.responseText != ""){
+        document.getElementById('{{ div }}').innerHTML = request.responseText;
+      }
     }
     request.open('GET', '{{ radio_path }}', true);
     request.send();
   }
 </script>
 </head>
-<body onload='loadRadioHtml()'>
+<body onload='loadPageData()'>
 <div id='{{ div }}'>
   Loading radio...
 </div>
+<table><tr><td>
+<form action='{{ radio_action_url }}' method='POST'>
+  <input type='hidden' name='action' value='play'>
+  <input type='Submit' value='Play'>
+</form>
+</td><td>
+<form action='{{ radio_action_url }}' method='POST'>
+  <input type='hidden' name='action' value='next'>
+  <input type='Submit' value='=>'>
+</form>
+</td></tr>
+</table>
 </body>
 </html>
 

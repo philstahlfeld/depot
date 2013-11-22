@@ -21,21 +21,21 @@ def UpdateInfoFromEvent(event_action):
       line = line.rstrip()
       if re.search('artist=', line):
         artist = line.split('=')[1]
-        radio_info.artist = artist
+        radio_info.artist = artist.strip()
       elif re.search('title=', line):
         song = line.split('=')[1]
-        radio_info.song = song
+        radio_info.song = song.strip()
       elif re.search('album=', line):
         album = line.split('=')[1]
-        radio_info.album = album
+        radio_info.album = album.strip()
       elif re.search('coverArt=', line):
         url = line.split('=')[1]
-        radio_info.coverart_url = url
+        radio_info.coverart_url = url.strip()
       elif re.search('stationName=', line):
         station = line.split('=')[1]
-        radio_info.station = station
+        radio_info.station = station.strip()
       elif re.search('station[0-9]+=', line):
-        station = line.split('=')[1]
+        station = line.split('=')[1].strip()
         radio_info.AddStation(station)
 
     radio_info.SaveToFile(config.INFO_PATH)

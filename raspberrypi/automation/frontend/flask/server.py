@@ -7,14 +7,15 @@ app = flask.Flask(__name__)
 
 @app.route('/')
 def Index():
-  remote.Start()
   render_data = {}
   render_data['radio_path'] = flask.url_for('Radio')
   render_data['div'] = 'Radio'
+  render_data['radio_action_url'] = flask.url_for('RadioControl')
   return flask.render_template('base.html', **render_data)
 
 @app.route('/radio')
 def Radio():
+  remote.Start()
   while True:
     info = radio_info.GetCurrentRadioInfo()
     if info:
@@ -22,7 +23,6 @@ def Radio():
   
   render_data = {
       'radio_info': info,
-      'radio_action_url': flask.url_for('RadioControl')
   }
   
   return flask.render_template('radio.html', **render_data)
