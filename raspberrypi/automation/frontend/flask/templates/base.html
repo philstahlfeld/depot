@@ -1,3 +1,4 @@
+{% import 'macros.html' as radio %}
 <!doctype html>
 <html>
 <head>
@@ -18,24 +19,22 @@
     request.open('GET', '{{ radio_path }}', true);
     request.send();
   }
+  function radioAction(form_name){
+    var form = document.getElementById(form_name);
+    var FD = new FormData(form);
+    var request = new XMLHttpRequest();
+
+    request.open('POST', '{{ radio_action_url }}', true);
+    request.send(FD);
+  }
 </script>
 </head>
 <body onload='loadPageData()'>
 <div id='{{ div }}'>
   Loading radio...
 </div>
-<table><tr><td>
-<form action='{{ radio_action_url }}' method='POST'>
-  <input type='hidden' name='action' value='play'>
-  <input type='Submit' value='Play'>
-</form>
-</td><td>
-<form action='{{ radio_action_url }}' method='POST'>
-  <input type='hidden' name='action' value='next'>
-  <input type='Submit' value='=>'>
-</form>
-</td></tr>
-</table>
+{{ radio.controlBar(radio_buttons) }}
+
 </body>
 </html>
 

@@ -11,6 +11,10 @@ def Index():
   render_data['radio_path'] = flask.url_for('Radio')
   render_data['div'] = 'Radio'
   render_data['radio_action_url'] = flask.url_for('RadioControl')
+  radio_buttons = []
+  radio_buttons.append({'name': 'Play', 'action': 'play'})
+  radio_buttons.append({'name': 'Next', 'action': 'next'})
+  render_data['radio_buttons'] = radio_buttons
   return flask.render_template('base.html', **render_data)
 
 @app.route('/radio')
@@ -34,8 +38,7 @@ def RadioControl():
     remote.Play()
   elif data['action'] == 'next':
     remote.Next()
-  return flask.redirect(flask.url_for('Index'))
-
+  return 'Successful'
 
 @app.route('/login/', methods=['GET', 'POST'])
 def Login():

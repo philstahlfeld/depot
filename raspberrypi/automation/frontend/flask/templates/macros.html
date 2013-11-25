@@ -1,0 +1,14 @@
+{% macro controlBar(buttons=[]) %}
+  <table>
+    <tr>
+      {% for button in buttons: %}
+        <td>
+          <form id='{{ button["action"] }}'>
+            <input type='hidden' name='action' value='{{ button["action"] }}'>
+            <input type='button' value='{{ button["name"] }}' onclick=radioAction("{{ button["action"] }}")>
+          </form>
+        </td>
+      {% endfor %}
+    <tr>
+  </table>
+{%- endmacro %}
