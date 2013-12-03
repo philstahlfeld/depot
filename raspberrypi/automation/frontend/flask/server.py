@@ -1,4 +1,5 @@
 import flask
+import pdb
 
 from depot.media.music.pandora.pianobar import radio_info
 from depot.media.music.pandora.pianobar import remote
@@ -11,11 +12,18 @@ def Index():
   render_data['radio_path'] = flask.url_for('Radio')
   render_data['div'] = 'Radio'
   render_data['radio_action_url'] = flask.url_for('RadioControl')
+  render_data['radio_buttons'] = GetPandoraControlBar()
+  return flask.render_template('base.html', **render_data)
+
+def GetPandoraControlBar():
   radio_buttons = []
   radio_buttons.append({'name': 'Play', 'action': 'play'})
   radio_buttons.append({'name': 'Next', 'action': 'next'})
-  render_data['radio_buttons'] = radio_buttons
-  return flask.render_template('base.html', **render_data)
+  radio_buttons.append({'name': '+', 'action': 'volume_up'})
+  radio_buttons.append({'name': '-', 'action': 'volume_down'})
+  radio_buttons.append({'name': 'Restart', 'action': 'restart'})
+  return radio_buttons
+
 
 @app.route('/radio')
 def Radio():
@@ -27,6 +35,7 @@ def Radio():
   
   render_data = {
       'radio_info': info,
+      'radio_action_url': flask.url_for('RadioControl')
   }
   
   return flask.render_template('radio.html', **render_data)
@@ -38,7 +47,17 @@ def RadioControl():
     remote.Play()
   elif data['action'] == 'next':
     remote.Next()
-  return 'Successful'
+  elif data['action'] == 'volume_up':
+    remote.VolumeUp()
+  elif data['action'] == 'volume_down':
+    remote.VolumeDown()
+  elif data['action'] == 'restart':
+    remote.Stop()
+    remote.Start()
+  elif data['action'] == 'change_station':
+    remote.ChangeStation(data['selector'])
+  return 'success'
+
 
 @app.route('/login/', methods=['GET', 'POST'])
 def Login():

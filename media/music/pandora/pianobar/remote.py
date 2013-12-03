@@ -18,7 +18,13 @@ def Next():
   _RemoveInfo()
   _WriteToCtl('n')
 
-def SwitchStation(station_number):
+def VolumeUp():
+  _WriteToCtl('))')
+
+def VolumeDown():
+  _WriteToCtl('((')
+
+def ChangeStation(station_number):
   _RemoveInfo()
   _WriteToCtl('s')
   _WriteToCtl(station_number + '\n')

@@ -1,3 +1,15 @@
+<form id='stations'>
+  <input type='hidden' name='action' value='change_station'>
+  <select id='selector' name='selector' onchange=radioAction("stations")>
+    {% for station in radio_info.stations %}
+      {% if station == radio_info.station %}
+        <option selected>{{ station }}</option>
+      {% else %}
+        <option>{{ station }}</option>
+      {% endif %}
+    {% endfor %}
+  </select>
+</form>
 <table>
   <tr>
     <td>
