@@ -1,5 +1,13 @@
 import atexit
-import RPi.GPIO as gpio
+try:
+  import RPi.GPIO as gpio
+except:
+  class Mock(object):
+    pass
+  def cleanup():
+    pass
+  gpio = Mock()
+  gpio.cleanup = cleanup
 
 class Service(object):
 
