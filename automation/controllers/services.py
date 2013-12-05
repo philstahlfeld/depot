@@ -1,5 +1,3 @@
-import RPi.GPIO as gpio
-
 from depot.automation.controllers import service
 
 

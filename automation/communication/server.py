@@ -26,7 +26,7 @@ if __name__ == '__main__':
   server = MessageServer(14025)
   server.Start()
   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-  s.connect(('localhost', 14025))
+  s.connect(('10.1.10.18', 14025))
   msg = message.BoardMessage()
   msg.SendOverSocket(s)
   rcv = server.GetMessage()

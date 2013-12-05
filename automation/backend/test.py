@@ -4,11 +4,11 @@ from depot.automation.communication import status_message
 from depot.automation.controllers import board
 from depot.automation.controllers import services
 
-b = board.Board('Test Board')
-s = services.OutletService(name='Test Outlet', pin=12)
-b.AddService(s)
 
-bc = board.BoardController(b)
-msg = services_message.ServicesMessage()
-bc.HandleMessage(msg)
-print msg.services
+if __name__ == '__main__':
+  s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  s.connect(('10.1.10.18', 14025))
+  msg = action_message.ActionMessage(service_name='Bedroom',
+                                      action=services.OutletService.Toggle)
+  msg.SendOverSocket(s)
+  s.close()
