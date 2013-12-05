@@ -2,6 +2,8 @@ import sys
 import socket
 import pickle
 
+MAX = 5
+
 class _Message(object):
 
   def __init__(self):
@@ -10,16 +12,16 @@ class _Message(object):
   def SendOverSocket(self, s):
     # Send length of the Message
     serial = pickle.dumps(self)
-    s.write(str(len(serial)).zfill(4))
+    s.send(str(len(serial)).zfill(5))
 
     s.send(serial)
 
-def RecieveOverSocket(s):
-  msgLen = int(s.recv(4))
+def ReceiveOverSocket(s):
+  msgLen = int(s.recv(5))
 
   buf = ""
   while len(buf) < msgLen:
-      buf += s.read()
+      buf += s.recv(512)
 
   return pickle.loads(buf)
 
