@@ -5,7 +5,7 @@ from depot.automation.communication import message
 class MessageServer(object):
 
   def __init__(self, port):
-    self.host = 'localhost'
+    self.host = '0.0.0.0'
     self.port = port
     self.bindsocket = None
 
@@ -26,7 +26,7 @@ if __name__ == '__main__':
   server = MessageServer(14025)
   server.Start()
   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-  s.connect(('localhost', 14025))
+  s.connect(('0.0.0.0', 14025))
   msg = message.BoardMessage()
   msg.SendOverSocket(s)
   rcv = server.GetMessage()

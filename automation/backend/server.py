@@ -6,7 +6,7 @@ if __name__ == '__main__':
   birdhouse = board.Board('The Birdhouse')
   birdhouse.AddService(services.OutletService(name='Bedroom', pin=12))
   birdhouse.AddService(services.OutletService(name='Outlet4', pin=16))
-  bc = board.BoardController(b)
+  bc = board.BoardController(birdhouse)
   s = server.MessageServer(port=14025)
   s.Start()
 
