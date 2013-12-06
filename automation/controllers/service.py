@@ -1,6 +1,7 @@
 import atexit
 try:
   import RPi.GPIO as gpio
+  print 'Running on RPi'
 except:
   class Mock(object):
     pass
