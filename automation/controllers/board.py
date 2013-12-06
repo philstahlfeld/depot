@@ -43,8 +43,8 @@ class BoardController(object):
       msg.status = service.Status()
       return msg
     elif isinstance(msg, action_message.ActionMessage):
-      action = getattr(service, msg.action)
-      action(service, msg.args)
+      action = getattr(service.__class__, msg.action)
+      action(service, **msg.args)
 
   def _HandleBoardMessage(self, msg):
     if isinstance(msg, services_message.ServicesMessage):
