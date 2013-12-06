@@ -1,15 +1,3 @@
-import atexit
-try:
-  import RPi.GPIO as gpio
-  print 'Running on RPi'
-except:
-  class Mock(object):
-    pass
-  def cleanup():
-    pass
-  gpio = Mock()
-  gpio.cleanup = cleanup
-
 class Service(object):
 
   def __init__(self, name, flavor):
@@ -18,13 +6,6 @@ class Service(object):
 
   def Status(self):
     raise NotImplementedError
-
-
-class GPIOService(Service):
-
-  @atexit.register
-  def Cleanup():
-    gpio.cleanup()
 
 
 class ServiceFlavor(object):
