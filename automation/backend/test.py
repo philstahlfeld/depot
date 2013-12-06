@@ -10,6 +10,6 @@ if __name__ == '__main__':
   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   s.connect(('10.1.10.18', 14025))
   msg = action_message.ActionMessage(service_name='Bedroom',
-                                      action=services.OutletService.Toggle.func_code)
+                                      action=services.OutletService.Toggle)
   msg.SendOverSocket(s)
   s.close()

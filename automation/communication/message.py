@@ -1,6 +1,6 @@
 import sys
 import socket
-import marshal
+import pickle
 
 MAX = 5
 
@@ -11,7 +11,7 @@ class _Message(object):
 
   def SendOverSocket(self, s):
     # Send length of the Message
-    serial = marshal.dumps(self)
+    serial = pickle.dumps(self)
     s.send(str(len(serial)).zfill(5))
 
     s.send(serial)
@@ -23,7 +23,7 @@ def ReceiveOverSocket(s):
   while len(buf) < msgLen:
       buf += s.recv(512)
 
-  return marshal.loads(buf)
+  return pickle.loads(buf)
 
 
 class ServiceMessage(_Message):
