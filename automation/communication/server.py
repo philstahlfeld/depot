@@ -18,8 +18,7 @@ class MessageServer(object):
     conn, (ip, port) = self._bindsocket.accept()
     print 'New connection from %s' % ip
     msg = message.ReceiveOverSocket(conn)
-    conn.close()
-    return msg
+    return (msg, conn)
 
 
 if __name__ == '__main__':

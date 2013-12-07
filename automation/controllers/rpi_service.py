@@ -11,5 +11,7 @@ class GPIOService(service.Service):
 
   @atexit.register
   def Cleanup():
-    import RPi.GPIO as gpio
-    gpio.cleanup()
+    try:
+      gpio.cleanup()
+    except:
+      pass

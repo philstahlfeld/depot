@@ -1,6 +1,9 @@
 import flask
 import pdb
+import socket
 
+from depot.automation.communication import message
+from depot.automation.communication import services_message
 from depot.media.music.pandora.pianobar import radio_info
 from depot.media.music.pandora.pianobar import remote
 
@@ -10,9 +13,10 @@ app = flask.Flask(__name__)
 def Index():
   render_data = {}
   render_data['radio_path'] = flask.url_for('Radio')
-  render_data['div'] = 'Radio'
   render_data['radio_action_url'] = flask.url_for('RadioControl')
   render_data['radio_buttons'] = GetPandoraControlBar()
+
+  render_data['services_path'] = flask.url_for('Services')
   return flask.render_template('base.html', **render_data)
 
 def GetPandoraControlBar():
@@ -24,6 +28,15 @@ def GetPandoraControlBar():
   radio_buttons.append({'name': 'Restart', 'action': 'restart'})
   return radio_buttons
 
+@app.route('/services')
+def Services():
+  s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  s.connect(('10.1.10.18', 14025))
+  msg = services_message.ServicesMessage()
+  msg.SendOverSocket(s)
+  msg = message.ReceiveOverSocket(s)
+  s.close()
+  return flask.render_template('services.html', service_dict=msg.services)
 
 @app.route('/radio')
 def Radio():

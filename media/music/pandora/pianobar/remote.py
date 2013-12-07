@@ -7,6 +7,7 @@ def Start():
   if not radio_info.PianobarIsRunning():
     _RemoveInfo()
     os.system(config.STARTER_PATH)
+    Play()
 
 def Stop():
   os.system('pkill -9 -f pianobar')

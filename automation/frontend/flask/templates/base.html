@@ -7,6 +7,7 @@
 <script>
   function loadPageData(){
     loadRadioHtml();
+    loadServicesHtml();
     setTimeout(function(){loadPageData();}, 5000);
   }
   function loadRadioHtml() {
@@ -14,10 +15,20 @@
     request.onreadystatechange = function(){
       selector = document.getElementById('selector');
       if(request.responseText && (selector != document.activeElement)){
-        document.getElementById('{{ div }}').innerHTML = request.responseText;
+        document.getElementById('radio').innerHTML = request.responseText;
       }
     }
     request.open('GET', '{{ radio_path }}', true);
+    request.send();
+  }
+  function loadServicesHtml(){
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function(){
+      if(request.responseText){
+        document.getElementById('services').innerHTML = request.responseText;
+      }
+    }
+    request.open('GET', '{{ services_path }}', true);
     request.send();
   }
   function radioAction(form_name){
@@ -31,11 +42,14 @@
 </script>
 </head>
 <body onload='loadPageData()'>
-<div id='{{ div }}'>
+<div id='radio'>
   Loading radio...
 </div>
 {{ radio.controlBar(radio_buttons) }}
 
+<div id='services'>
+  Loading services...
+</div>
 </body>
 </html>
 
