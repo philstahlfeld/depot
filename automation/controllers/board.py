@@ -51,4 +51,4 @@ class BoardController(object):
       services = self.board.Services()
       for service in services:
         msg.AddService(service.name, service.flavor)
-        return msg
+      return msg
