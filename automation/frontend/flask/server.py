@@ -10,6 +10,9 @@ from depot.automation.controllers import services
 from depot.media.music.pandora.pianobar import radio_info
 from depot.media.music.pandora.pianobar import remote
 
+BOARDS = {
+    'The Birdhouse': '10.1.10.18',
+}
 
 action_mapper = {
     services.SWITCHABLE.name: services.SWITCHABLE,
@@ -37,36 +40,39 @@ def GetPandoraControlBar():
   radio_buttons.append({'name': 'Restart', 'action': 'restart'})
   return radio_buttons
 
-def GetSocket():
+def GetSocket(board_name):
+  ip = BOARDS[board_name]
   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-  s.connect(('10.1.10.18', 14025))
+  s.connect((ip, 14025))
   return s
 
 @app.route('/services')
 def Services():
-  s = GetSocket()
-  msg = services_message.ServicesMessage()
-  msg.SendOverSocket(s)
-  msg = message.ReceiveOverSocket(s)
-  s.close()
-  ds_list = []
-  for name in msg.services:
-    msg2 = status_message.StatusMessage(name)
-    s = GetSocket()
-    msg2.SendOverSocket(s)
-    msg2 = message.ReceiveOverSocket(s)
+  for board in BOARDS:
+    s = GetSocket(board)
+    msg = services_message.ServicesMessage()
+    msg.SendOverSocket(s)
+    msg = message.ReceiveOverSocket(s)
     s.close()
-    ds_list.append(DisplayService(name, msg.services[name].name, msg2.status))
+    ds_list = []
+    for name in msg.services:
+      msg2 = status_message.StatusMessage(name)
+      s = GetSocket(board)
+      msg2.SendOverSocket(s)
+      msg2 = message.ReceiveOverSocket(s)
+      s.close()
+      ds_list.append(DisplayService(name, msg.services[name].name, msg2.status, board))
   return flask.render_template('services.html', services=ds_list)
 
 
 
 class DisplayService(object):
 
-  def __init__(self, name, flavor, status):
+  def __init__(self, name, flavor, status, board):
     self.name = name
     self.flavor = flavor
     self.status = status
+    self.board = board
 
 @app.route('/service_control', methods=['POST'])
 def ServicesControl():
@@ -76,7 +82,7 @@ def ServicesControl():
   if action_type == services.SWITCHABLE:
     msg = action_message.ActionMessage(service_name=data['service_name'],
                                        action=services.OutletService.Toggle)
-    s = GetSocket()
+    s = GetSocket(data['board'])
     msg.SendOverSocket(s)
     s.close()
 
