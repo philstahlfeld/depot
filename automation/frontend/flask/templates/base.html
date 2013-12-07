@@ -39,6 +39,14 @@
     request.open('POST', '{{ radio_action_url }}', true);
     request.send(FD);
   }
+  function servicesAction(form_name){
+    var form = document.getElementById(form_name);
+    var FD = new FormData(form);
+    var request = new XMLHttpRequest();
+
+    request.open('POST', '{{ services_action_url }}', true);
+    request.send(FD);
+  }
 </script>
 </head>
 <body onload='loadPageData()'>

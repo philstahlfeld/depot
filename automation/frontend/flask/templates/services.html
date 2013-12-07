@@ -1,0 +1,17 @@
+{% for service in services %}
+<table>
+<tr>
+<td>
+{{service.name}}
+</td>
+<td>
+{{service.status}}
+</td>
+<td>
+<form id='{{service.name}}' name='{{service.name}}'>
+  <input type='hidden' name='service_name' value='{{service.name}}'>
+  <input type='hidden' name='flavor' value='{{service.flavor}}'>  
+  <input type='button' value='Toggle' onclick=servicesAction('{{service.name}}')>
+</form>
+</td>
+{% endfor %}
