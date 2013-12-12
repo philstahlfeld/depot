@@ -5,7 +5,13 @@
 {{service.name}}
 </td>
 <td>
-{{service.status}}
+<b>
+{% if service.status %}
+On
+{% else %}
+Off
+{% endif %}
+</b>
 </td>
 <td>
 <form id='{{service.name}}' name='{{service.name}}'>
