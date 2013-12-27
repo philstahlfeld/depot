@@ -25,13 +25,16 @@ def ConvertDir(directory):
     os.remove(mp4)
 
   files = glob.glob(directory_glob + '.mp3')
+  pattern = re.compile('(.*/)(.+) (BY) (.+) (ON) (.+)(.mp3)')
   for mp3 in files:
     print 'Working on ' + mp3
-    pattern = re.compile('(.*/)(.+) (BY) (.+) (ON) (.+)(.mp3)')
     info = pattern.match(mp3)
     print info.groups()
-    audio = easyid3.EasyID3(mp3)
-    audio['title'] = info.group(2)
-    audio['artist'] = info.group(4)
-    audio['album'] = info.group(6)
-    audio.save()
+    try:
+      audio = easyid3.EasyID3(mp3)
+      audio['title'] = info.group(2)
+      audio['artist'] = info.group(4)
+      audio['album'] = info.group(6)
+      audio.save()
+    except:
+      print 'You\'re going to have to do this one manually... sorry'
