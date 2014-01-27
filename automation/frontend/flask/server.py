@@ -1,6 +1,7 @@
 import flask
 import pdb
 import socket
+import time
 
 from depot.automation.communication import message
 from depot.automation.communication import action_message
@@ -95,6 +96,7 @@ def Radio():
     info = radio_info.GetCurrentRadioInfo()
     if info:
       break
+    time.sleep(0.25)
   
   render_data = {
       'radio_info': info,
