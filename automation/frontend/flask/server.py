@@ -11,7 +11,7 @@ from depot.media.music.pandora.pianobar import radio_info
 from depot.media.music.pandora.pianobar import remote
 
 BOARDS = {
-    'The Birdhouse': '10.1.10.18',
+    'The Birdhouse': '10.1.10.24',
 }
 
 action_mapper = {
