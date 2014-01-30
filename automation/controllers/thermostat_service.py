@@ -2,6 +2,7 @@ import threading
 import time
 
 from depot.automation.controllers import service
+from depot.automation.controllers.utils import thermometer
 
 
 THERMOSTAT = service.ServiceFlavor('thermostat')
@@ -10,10 +11,10 @@ THERMOSTAT = service.ServiceFlavor('thermostat')
 class Thermostat(service.Service):
   """Wraps an outlet service to control a heater."""
 
-  def __init__(self, name, outlet, temperature=72):
+  def __init__(self, name, outlet, target=72):
     super(Thermostat, self).__init__(name=name, flavor=THERMOSTAT)
     self._outlet = outlet
-    self._target = temperature
+    self._target = target  # Target temperature
     self._stop = True
     self.Start()
 
@@ -25,9 +26,14 @@ class Thermostat(service.Service):
   def Stop(self):
     self._stop = True
 
+  def SetTarget(self, target):
+    self._target = target
+
+  def GetTarget(self):
+    return self._target
+
   def GetTemperature(self):
-    # TODO: return float representing temp in F (from Adafruit code)
-    return 71
+    return thermometer.GetTemperature()
 
   def Status(self):
     outlet = self._outlet.Status()
