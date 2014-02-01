@@ -2,7 +2,7 @@ import threading
 import time
 
 from depot.automation.controllers import service
-from depot.automation.controllers.utils import thermometer
+#from depot.automation.controllers.utils import thermometer
 
 
 THERMOSTAT = service.ServiceFlavor('thermostat')
