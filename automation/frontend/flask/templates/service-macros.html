@@ -1,0 +1,24 @@
+{% macro switchableTableRow(service) %}
+  <tr>
+    <td>
+      {{service.name}}
+    </td>
+    <td>
+      <b>
+        {% if service.status %}
+          On
+        {% else %}
+          Off
+        {% endif %}
+      </b>
+    </td>
+    <td>
+      <form id='{{service.name}}' name='{{service.name}}'>
+        <input type='hidden' name='board' value='{{service.board}}'>
+        <input type='hidden' name='service_name' value='{{service.name}}'>
+        <input type='hidden' name='flavor' value='{{service.flavor}}'>  
+        <input type='button' value='Toggle' onclick=servicesAction('{{service.name}}')>
+      </form>
+    </td>
+  </tr>
+{%- endmacro %}

@@ -1,24 +1,10 @@
-{% for service in services %}
+{% import 'service-macros.html' as service_renderer %}
 <table>
-<tr>
-<td>
-{{service.name}}
-</td>
-<td>
-<b>
-{% if service.status %}
-On
-{% else %}
-Off
-{% endif %}
-</b>
-</td>
-<td>
-<form id='{{service.name}}' name='{{service.name}}'>
-  <input type='hidden' name='board' value='{{service.board}}'>
-  <input type='hidden' name='service_name' value='{{service.name}}'>
-  <input type='hidden' name='flavor' value='{{service.flavor}}'>  
-  <input type='button' value='Toggle' onclick=servicesAction('{{service.name}}')>
-</form>
-</td>
-{% endfor %}
+  {% for service in services %}
+    {% if service.flavor == 'switchable' %}
+      {{ service_renderer.switchableTableRow(service) }}
+    {% else %}
+      Could not determine service
+    {% endif %} 
+  {% endfor %}
+</table>
