@@ -22,3 +22,24 @@
     </td>
   </tr>
 {%- endmacro %}
+
+{% thermostatTableRow(service) %}
+  <tr>
+    <td>
+      {{service.name}}
+    </td>
+    <td>
+      <b>
+        {{service.status[0]}}&deg; F
+      </b>
+    </td>
+    <td>
+      <form id='{{service.name}}' name='{{service.name}}'>
+        <input type='hidden' name='board' value='{{service.board}}'>
+        <input type='hidden' name='service_name' value='{{service.name}}'>
+        <input type='hidden' name='flavor' value='{{service.flavor}}'>  
+        <input type='text' name='target' value='{{service.status[1]}}' maxlength=2>
+      </form>
+    </td>
+  </tr>
+{%- endmacro %}

@@ -33,7 +33,7 @@ class Thermostat(service.Service):
     return self._target
 
   def GetTemperature(self):
-    return thermometer.GetTemperature()
+    return 73 #thermometer.GetTemperature()
 
   def Status(self):
     outlet = self._outlet.Status()
