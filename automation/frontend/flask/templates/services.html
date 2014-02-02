@@ -1,12 +1,10 @@
 {% import 'service-macros.html' as service_renderer %}
-<table>
-  {% for service in services %}
-    {% if service.flavor == 'switchable' %}
-      {{ service_renderer.switchableTableRow(service) }}
-    {% elif service.flavor == 'thermostat' %}
-      {{ service_renderer.thermostatTableRow(service) }}
-    {% else %}
-      Could not determine service flavor: {{ service.flavor }}
-    {% endif %} 
-  {% endfor %}
-</table>
+{% for service in services %}
+  {% if service.flavor == 'switchable' %}
+    {{ service_renderer.switchableTableRow(service) }}
+  {% elif service.flavor == 'thermostat' %}
+    {{ service_renderer.thermostatTableRow(service) }}
+  {% else %}
+    Could not determine service flavor: {{ service.flavor }}
+  {% endif %} 
+{% endfor %}

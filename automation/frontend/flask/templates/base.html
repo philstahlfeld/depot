@@ -8,7 +8,7 @@
   function loadPageData(){
     loadRadioHtml();
     loadServicesHtml();
-    setTimeout(function(){loadPageData();}, 5000);
+    setTimeout(function(){loadPageData();}, 10000);
   }
   function loadRadioHtml() {
     var request = new XMLHttpRequest();
@@ -24,7 +24,7 @@
   function loadServicesHtml(){
     var request = new XMLHttpRequest();
     request.onreadystatechange = function(){
-      if(request.responseText){
+      if(request.readyState == 4 && request.status == 200){
         document.getElementById('services').innerHTML = request.responseText;
       }
     }
