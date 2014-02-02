@@ -14,6 +14,7 @@ if __name__ == '__main__':
 
   while True:
     msg, conn = s.GetMessage()
+    print msg
     rtn = bc.HandleMessage(msg)
     if rtn:
       rtn.SendOverSocket(conn)
