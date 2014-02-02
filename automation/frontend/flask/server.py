@@ -8,6 +8,7 @@ from depot.automation.communication import action_message
 from depot.automation.communication import services_message
 from depot.automation.communication import status_message
 from depot.automation.controllers import services
+from depot.automation.controllers import thermostat_service
 from depot.media.music.pandora.pianobar import radio_info
 from depot.media.music.pandora.pianobar import remote
 
@@ -17,6 +18,7 @@ BOARDS = {
 
 action_mapper = {
     services.SWITCHABLE.name: services.SWITCHABLE,
+    thermostat_service.THERMOSTAT.name: thermostat_service.THERMOSTAT,
 }
 
 app = flask.Flask(__name__)
@@ -87,6 +89,14 @@ def ServicesControl():
     msg.SendOverSocket(s)
     s.close()
 
+  elif action_type == thermostat_service.THERMOSTAT:
+    msg = action_message.ActionMessage(service_name=data['service_name'],
+                                       action=thermostat_service.Thermostat.SetTarget,
+                                       target=int(data['target']))
+    s = GetSocket(data['board'])
+    msg.SendOverSocket(s)
+    s.close()
+
   return 'Success'
 
 @app.route('/radio')
@@ -135,4 +145,4 @@ def Login():
 
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=80)
+  app.run(host='0.0.0.0', port=80, debug=False)
