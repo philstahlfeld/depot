@@ -13,7 +13,7 @@ def MP4ToMP3(input_file, output_file=None, bitrate=192000):
 
   bitrate = str(bitrate)
 
-  subprocess.call(['ffmpeg', '-i', input_file, '-f', 'mp3', '-ab', bitrate, '-vn', output_file])
+  subprocess.call(['ffmpeg', '-n', '-i', input_file, '-f', 'mp3', '-ab', bitrate, '-vn', output_file])
 
 
 def ConvertDir(directory):

@@ -60,10 +60,10 @@ module RightFace(width, height, thickness, box_length){
   translate([box_length-thickness, 0, 0]){
     cube([thickness, width, height]);
     translate([0, width/2, (height-85)/2]){
-      color("purple") rotate([0, -90, 0]) Standoff(h=10, r1=3, r2=2);
+      color("purple") rotate([0, -90, 0]) Standoff(h=10, r1=2, r2=1.25);
     }
     translate([0, width/2, height - (height-85)/2]){
-      color("purple") rotate([0, -90, 0]) Standoff(h=10, r1=3, r2=2);
+      color("purple") rotate([0, -90, 0]) Standoff(h=10, r1=2, r2=1.25);
     }
   }
 }
