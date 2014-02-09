@@ -2,7 +2,8 @@ import threading
 import time
 
 from depot.automation.controllers import service
-#from depot.automation.controllers.utils import thermometer
+from depot.automation.controllers.utils import thermometer
+from depot.utils import logging
 
 
 THERMOSTAT = service.ServiceFlavor('thermostat')
@@ -33,7 +34,7 @@ class Thermostat(service.Service):
     return self._target
 
   def GetTemperature(self):
-    return 73 #thermometer.GetTemperature()
+    return int(thermometer.GetTemperature())
 
   def Status(self):
     outlet = self._outlet.Status()
@@ -45,7 +46,9 @@ class Thermostat(service.Service):
       self._DoControl()
       if self._stop:
         return
-      time.sleep(30)
+      output = 'target: %s, temp: %s' % (thermometer.GetTemperature(), self._target)
+      logging.Info('thermostat.log', output)
+      time.sleep(5)
 
   def _DoControl(self):
     """Keep temperature in a 5 degree window."""
