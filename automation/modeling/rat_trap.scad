@@ -1,7 +1,7 @@
 use <outlet.scad>
 use <pi_mount.scad>
 
-module RatTrapBox(length=225, width=150, height=120, thickness=3){
+module RatTrapBox(length=215, width=140, height=120, thickness=2){
   union() {
     BottomFace(length=length, width=width, thickness=thickness); 
     FrontFace(length=length, height=height, thickness=thickness, hole_length=190, hole_height=80);
@@ -43,8 +43,8 @@ module RearFace(length, height, box_width, thickness){
 module BottomFace(length, width, thickness){
   difference(){
     cube([length, width, thickness]);
-    translate([(length-125)/2, 30, thickness]){
-      color("orange") BarrierStripMount(depth=2);
+    translate([(length-125)/2, 25, thickness]){
+      color("orange") BarrierStripMount(depth=1.5);
     }
   }
   translate([(length-75)/2, (width-55)/2 + 10, thickness]){
@@ -60,10 +60,10 @@ module RightFace(width, height, thickness, box_length){
   translate([box_length-thickness, 0, 0]){
     cube([thickness, width, height]);
     translate([0, width/2, (height-85)/2]){
-      color("purple") rotate([0, -90, 0]) Standoff(h=10, r1=2, r2=1.25);
+      color("purple") rotate([0, -90, 0]) Standoff(h=10, r1=3, r2=1.25);
     }
     translate([0, width/2, height - (height-85)/2]){
-      color("purple") rotate([0, -90, 0]) Standoff(h=10, r1=2, r2=1.25);
+      color("purple") rotate([0, -90, 0]) Standoff(h=10, r1=3, r2=1.25);
     }
   }
 }

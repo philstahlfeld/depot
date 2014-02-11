@@ -1,7 +1,7 @@
 module OutletMount(depth, height) {
   translate([0, 0, -depth]){
-    cylinder(h=depth+0.1, r=1.25, $fn=50);
-    translate([0, height, 0]) cylinder(h=depth+0.1, r=1.25, $fn=50);
+    cylinder(h=depth+0.1, r=2, $fn=50);
+    translate([0, height, 0]) cylinder(h=depth+0.1, r=2, $fn=50);
   }
 }
 
