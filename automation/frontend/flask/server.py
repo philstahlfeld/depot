@@ -13,7 +13,7 @@ from depot.media.music.pandora.pianobar import radio_info
 from depot.media.music.pandora.pianobar import remote
 
 BOARDS = {
-    'The Birdhouse': '10.1.10.25',
+    'The Birdhouse': '10.1.10.18',
 }
 
 action_mapper = {
@@ -145,4 +145,4 @@ def Login():
 
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=80, debug=False)
+  app.run(host='0.0.0.0', port=80, debug=False, threaded=True)
