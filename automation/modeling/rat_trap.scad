@@ -3,11 +3,11 @@ use <pi_mount.scad>
 
 module RatTrapBox(length=215, width=140, height=120, thickness=2){
   union() {
-    BottomFace(length=length, width=width, thickness=thickness); 
+    BottomFace(length=length-thickness*2, width=width-thickness*2, thickness=thickness); 
     FrontFace(length=length, height=height, thickness=thickness, hole_length=190, hole_height=80);
     RearFace(length=length, height=height, box_width=width, thickness=thickness);
-    LeftFace(width=width, height=height, thickness=thickness);
-    RightFace(width=width, height=height, thickness=thickness, box_length=length);
+    LeftFace(width=width-thickness*2, height=height, thickness=thickness);
+    RightFace(width=width-thickness*2, height=height, thickness=thickness, box_length=length);
   }
 }
 
@@ -41,6 +41,7 @@ module RearFace(length, height, box_width, thickness){
 }
 
 module BottomFace(length, width, thickness){
+  translate([thickness, thickness, 0]){
   difference(){
     cube([length, width, thickness]);
     translate([(length-125)/2, 25, thickness]){
@@ -50,14 +51,17 @@ module BottomFace(length, width, thickness){
   translate([(length-75)/2, (width-55)/2 + 10, thickness]){
     color("red") RelayMount(height=20);
   }
+  }
 }
 
 module LeftFace(width, height, thickness){
-  cube([thickness, width, height]);
+  translate([0, thickness, 0]){
+    cube([thickness, width, height]);
+  }
 }
 
 module RightFace(width, height, thickness, box_length){
-  translate([box_length-thickness, 0, 0]){
+  translate([box_length-thickness, thickness, 0]){
     cube([thickness, width, height]);
     translate([0, width/2, (height-85)/2]){
       color("purple") rotate([0, -90, 0]) Standoff(h=10, r1=3, r2=1.25);
