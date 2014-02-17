@@ -42,11 +42,11 @@
         <input type='hidden' name='service_name' value='{{service.name}}'>
         <input type='hidden' name='flavor' value='{{service.flavor}}'>  
         <select name='target' onchange=servicesAction('{{service.name}}')>
-          {% for temp in [0, 60, 65, 70, 75] %}
+          {% for display, temp  in [('Off', 0), ('Cold', 60), ('Cool', 65), ('Warm', 70), ('Hot', 75)] %}
             {% if temp == service.status[1] %}
-              <option value={{ temp }} selected>{{temp}}</option>
+              <option value={{ temp }} selected>{{ display }}</option>
             {% else %}
-              <option value={{temp}}>{{temp}}</option>
+              <option value={{ temp }}>{{ display }}</option>
             {% endif %}
           {% endfor %}
         </select>
