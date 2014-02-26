@@ -1,7 +1,17 @@
+import threading
+
 from depot.automation.communication import server
 from depot.automation.controllers import board
 from depot.automation.controllers import services
 from depot.automation.controllers import thermostat_service
+
+def HandleMessage(bc, msg, conn):
+  try:
+    rtn = bc.HandleMessage(msg)
+    if rtn:
+      rtn.SendOverSocket(conn)
+  finally:
+    conn.close()
 
 if __name__ == '__main__':
   birdhouse = board.Board('The Birdhouse')
@@ -14,8 +24,6 @@ if __name__ == '__main__':
 
   while True:
     msg, conn = s.GetMessage()
-    print msg
-    rtn = bc.HandleMessage(msg)
-    if rtn:
-      rtn.SendOverSocket(conn)
-    conn.close()
+    t = threading.Thread(target=HandleMessage, args=(bc, msg, conn))
+    t.daemon = True
+    t.start()
