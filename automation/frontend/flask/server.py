@@ -1,3 +1,10 @@
+# ----------------------------------------------------------------------------
+# "THE BEER-WARE LICENSE" (Revision 42):
+# <phil@stahlfeld.com> wrote this file. As long as you retain this notice you
+# can do whatever you want with this stuff. If we meet some day, and you think
+# this stuff is worth it, you can buy me a beer in return. Phil Stahlfeld
+# ----------------------------------------------------------------------------
+
 import flask
 import pdb
 import socket
@@ -13,7 +20,7 @@ from depot.media.music.pandora.pianobar import radio_info
 from depot.media.music.pandora.pianobar import remote
 
 BOARDS = {
-    'The Birdhouse': '10.1.10.24',
+    'The Birdhouse': '10.1.10.18',
 }
 
 action_mapper = {
@@ -145,4 +152,4 @@ def Login():
 
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=80, debug=False)
+  app.run(host='0.0.0.0', port=80, debug=False, threaded=True)

@@ -41,7 +41,15 @@
         <input type='hidden' name='board' value='{{service.board}}'>
         <input type='hidden' name='service_name' value='{{service.name}}'>
         <input type='hidden' name='flavor' value='{{service.flavor}}'>  
-        <input type='number' name='target' value='{{service.status[1]}}' size=2  onchange=servicesAction('{{service.name}}')>
+        <select name='target' onchange=servicesAction('{{service.name}}')>
+          {% for display, temp  in [('Off', 0), ('Cold', 60), ('Cool', 65), ('Warm', 70), ('Hot', 75)] %}
+            {% if temp == service.status[1] %}
+              <option value={{ temp }} selected>{{ display }}</option>
+            {% else %}
+              <option value={{ temp }}>{{ display }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
       </form>
     </td>
   </tr>

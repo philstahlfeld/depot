@@ -1,3 +1,10 @@
+# ----------------------------------------------------------------------------
+# "THE BEER-WARE LICENSE" (Revision 42):
+# <phil@stahlfeld.com> wrote this file. As long as you retain this notice you
+# can do whatever you want with this stuff. If we meet some day, and you think
+# this stuff is worth it, you can buy me a beer in return. Phil Stahlfeld
+# ----------------------------------------------------------------------------
+
 """Uses ffmpeg to convert audio files"""
 
 import glob
@@ -13,7 +20,7 @@ def MP4ToMP3(input_file, output_file=None, bitrate=192000):
 
   bitrate = str(bitrate)
 
-  subprocess.call(['ffmpeg', '-i', input_file, '-f', 'mp3', '-ab', bitrate, '-vn', output_file])
+  subprocess.call(['ffmpeg', '-n', '-i', input_file, '-f', 'mp3', '-ab', bitrate, '-vn', output_file])
 
 
 def ConvertDir(directory):
