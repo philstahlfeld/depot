@@ -17,7 +17,7 @@ class MessageServer(object):
     self.bindsocket = None
 
   def Start(self):
-    self._bindsocket = socket.socket()
+    self._bindsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     self._bindsocket.bind((self.host, self.port))
     self._bindsocket.listen(5)
 

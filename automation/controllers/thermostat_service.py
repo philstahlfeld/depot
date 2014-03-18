@@ -19,7 +19,7 @@ THERMOSTAT = service.ServiceFlavor('thermostat')
 class Thermostat(service.Service):
   """Wraps an outlet service to control a heater."""
 
-  def __init__(self, name, outlet, target=72):
+  def __init__(self, name, outlet, target=70):
     super(Thermostat, self).__init__(name=name, flavor=THERMOSTAT)
     self._outlet = outlet
     self._target = target  # Target temperature
