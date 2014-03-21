@@ -6,7 +6,9 @@
 # ----------------------------------------------------------------------------
 
 import flask
-import pdb
+import flask_googlelogin
+import flask_login
+import secrets
 import socket
 import time
 
@@ -19,8 +21,11 @@ from depot.automation.controllers import thermostat_service
 from depot.media.music.pandora.pianobar import radio_info
 from depot.media.music.pandora.pianobar import remote
 
+users = {}
+
+AUTHORIZED = ['113044271927424517470']
 BOARDS = {
-    'The Birdhouse': '10.1.10.18',
+    'The Birdhouse': '10.1.10.16',
 }
 
 action_mapper = {
@@ -29,8 +34,40 @@ action_mapper = {
 }
 
 app = flask.Flask(__name__)
+app.config.update(**secrets.SECRETS)
+gl = flask_googlelogin.GoogleLogin(app)
+
+
+class User(flask_login.UserMixin):
+
+  def __init__(self, userinfo):
+    self.id = userinfo['id']
+    self.name = userinfo['name']
+
+
+@gl.user_loader
+def GetUser(userid):
+  return users.get(userid)
+
+
+@app.route('/oauth2callback')
+@gl.oauth2callback
+def Login(token, userinfo, **kwargs):
+  user = users[userinfo['id']] = User(userinfo)
+  if user.id in AUTHORIZED:
+    flask_login.login_user(user)
+
+  return flask.redirect(flask.url_for('Index'))
+
+
+@app.route('/logout')
+def Logout():
+  flask_login.logout_user()
+  return flask.redirect(flask.url_for('Index'))
+
 
 @app.route('/')
+@flask_login.login_required
 def Index():
   render_data = {}
   render_data['radio_path'] = flask.url_for('Radio')
@@ -139,16 +176,6 @@ def RadioControl():
   elif data['action'] == 'change_station':
     remote.ChangeStation(data['selector'])
   return 'success'
-
-
-@app.route('/login/', methods=['GET', 'POST'])
-def Login():
-  if flask.request.method == 'GET':
-    return flask.render_template('login_page.html', 
-                                 action=flask.url_for('Login'))
-  else:
-    return 'Called with POST data'
-
 
 
 if __name__ == '__main__':
