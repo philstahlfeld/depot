@@ -25,7 +25,7 @@ users = {}
 
 AUTHORIZED = ['113044271927424517470']
 BOARDS = {
-    'The Birdhouse': '10.1.10.16',
+    'The Birdhouse': '10.1.10.17',
 }
 
 action_mapper = {
@@ -67,7 +67,6 @@ def Logout():
 
 
 @app.route('/')
-@flask_login.login_required
 def Index():
   render_data = {}
   render_data['radio_path'] = flask.url_for('Radio')
@@ -179,4 +178,4 @@ def RadioControl():
 
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=80, debug=False, threaded=True)
+  app.run(host='0.0.0.0', port=80, debug=True, threaded=True)

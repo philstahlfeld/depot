@@ -1,6 +1,8 @@
 import socket
 import threading
+import time
 
+from depot.automation.communication import action_message
 from depot.automation.communication import message
 from depot.automation.communication import services_message
 from depot.automation.communication import status_message
@@ -14,6 +16,7 @@ class RemoteManager(object):
     self._services = {}  # Map service name to (flavor, status)
     self._update = True  # Keep thread going
     self._name = name
+    self._services_lock = threading.Lock()
 
   def _OpenSocket(self):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -29,26 +32,36 @@ class RemoteManager(object):
   def Stop(self):
     self._update = False
 
+  def PerformAction(self, service_name, action, **kwargs):
+    msg = action_message.ActionMessage(service_name=service_name,
+                                       action=action,
+                                       **kwargs)
+    s = self._OpenSocket()
+    msg.SendOverSocket(s)
+    s.close()
+    self._Update()
+
   def _RunUpdater(self):
     while self._update:
-      print 'updating'
       self._Update()
       time.sleep(5)
 
-  # Needs to be synchonized
   def _Update(self):
     s = self._OpenSocket()
     msg = services_message.ServicesMessage()
     msg.SendOverSocket(s)
     msg = message.ReceiveOverSocket(s)
     s.close()
+    services = {}
     for name in msg.services:
       s = self._OpenSocket()
       msg2 = status_message.StatusMessage(name)
       msg2.SendOverSocket(s)
       msg2 = message.ReceiveOverSocket(s)
       s.close()
-      self._services[name] = (msg.services[name], msg2.status)
+      services[name] = (msg.services[name], msg2.status)
+    with self._services_lock:
+      self._services = services
 
   def __repr__(self):
     rtn = '%s\n' % self._name
