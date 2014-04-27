@@ -8,9 +8,14 @@
 from depot.automation.communication import message
 
 
-class ActionMessage(message.ServiceMessage):
+class HooksMessage(message.BoardMessage):
 
-  def __init__(self, service_name, action, **kwargs):
-    super(ActionMessage, self).__init__(service_name)
-    self.action = action.__name__
-    self.args = kwargs
+  def __init__(self):
+    super(HooksMessage, self).__init__()
+    self.hooks = None
+
+
+class HookTriggerMessage(message.BoardMessage):
+
+  def __init__(self, hook):
+    self.hook = hook

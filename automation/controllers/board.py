@@ -7,22 +7,32 @@
 
 from depot.automation.communication import message
 from depot.automation.communication import action_message
+from depot.automation.communication import board_messages
 from depot.automation.communication import services_message
 from depot.automation.communication import status_message
 
+
 class BoardError(Exception):
   pass
+
 
 class Board(object):
 
   def __init__(self, name):
     self.name = name
     self._services = {}
+    self._hooks = []
 
   def AddService(self, service):
     if service.name in self._services:
       raise BoardError('Duplicate controller name: %s' % service.name)
     self._services[service.name] = service
+
+  def AddHook(self, hook):
+    self._hooks.append(name)
+
+  def GetHooks(self):
+    return self._hooks
 
   def __getitem__(self, key):
     return self._services[key]
@@ -35,6 +45,7 @@ class BoardController(object):
 
   def __init__(self, board):
     self.board = board
+    self.hook_handler = None  # Callable that takes hook and board as params.
 
   def HandleMessage(self, msg):
     if isinstance(msg, message.ServiceMessage):
@@ -61,3 +72,8 @@ class BoardController(object):
       for service in services:
         msg.AddService(service.name, service.flavor)
       return msg
+    elif isinstance(msg, board_messages.HooksMessage):
+      msg.hooks = self.board.GetHooks()
+      return msg
+    elif isinstance(msg, board_messages.HookTriggerMessage):
+      self.hook_handler(hook=msg.hook, board=self.board)

@@ -22,10 +22,23 @@ def HandleMessage(bc, msg, conn):
 
 if __name__ == '__main__':
   birdhouse = board.Board('The Birdhouse')
+
+  # Define board services
   birdhouse.AddService(services.OutletService(name='Lamp', pin=12))
   heater_outlet = services.OutletService(name='Heater', pin=16)
   birdhouse.AddService(thermostat_service.Thermostat(name='Bedroom', outlet=heater_outlet))
+
+  # Define hooks
+  birdhouse.AddHook('returned_home')
+
+  # Define hook handler
+  def HookHandler(hook, board):
+    if hook == 'returned_home':
+      board['Lamp'].TurnOn()
+
   bc = board.BoardController(birdhouse)
+  bc.hook_handler = HookHandler
+
   s = server.MessageServer(port=14025)
   s.Start()
 
