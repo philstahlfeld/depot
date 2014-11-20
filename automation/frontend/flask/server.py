@@ -10,6 +10,7 @@ import flask_googlelogin
 import flask_login
 import secrets
 import socket
+from OpenSSL import SSL
 import time
 
 from depot.automation.communication import message
@@ -23,9 +24,12 @@ from depot.media.music.pandora.pianobar import remote
 
 users = {}
 
-AUTHORIZED = ['113044271927424517470']
+AUTHORIZED = [
+    '113044271927424517470',
+    '112877179519925844215',
+]
 BOARDS = {
-    'The Birdhouse': '10.1.10.17',
+    'The Birdhouse': '10.1.10.16',
 }
 
 action_mapper = {
@@ -67,6 +71,7 @@ def Logout():
 
 
 @app.route('/')
+@flask_login.login_required
 def Index():
   render_data = {}
   render_data['radio_path'] = flask.url_for('Radio')
@@ -121,6 +126,7 @@ class DisplayService(object):
     self.board = board
 
 @app.route('/service_control', methods=['POST'])
+@flask_login.login_required
 def ServicesControl():
   data = flask.request.form
   action_type = action_mapper[data['flavor']]
@@ -159,6 +165,7 @@ def Radio():
   return flask.render_template('radio.html', **render_data)
 
 @app.route('/radio_control', methods=['POST'])
+@flask_login.login_required
 def RadioControl():
   data = flask.request.form
   if data['action'] == 'play':
@@ -178,4 +185,7 @@ def RadioControl():
 
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=80, debug=True, threaded=True)
+  context = SSL.Context(SSL.SSLv23_METHOD)
+  context.use_privatekey_file('/home/philstahlfeld/private.pem')
+  context.use_certificate_file('/home/philstahlfeld/cert.pem')
+  app.run(host='0.0.0.0', port=80, debug=False, threaded=True)
