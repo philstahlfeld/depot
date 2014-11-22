@@ -3,7 +3,6 @@
 <html>
 <head>
 <meta name="viewport" content="width=350px">
-<div style='width:275px'>
 <script src="static/bower_components/webcomponentsjs/webcomponents.js"></script>
 <link rel="import" href="static/bower_components/paper-elements/paper-elements.html">
 <title>Control Panel</title>
@@ -44,11 +43,18 @@
   }
   function servicesAction(form_name){
     var form = document.getElementById(form_name);
-    var FD = new FormData(form);
+    var form_data = new FormData();
     var request = new XMLHttpRequest();
 
+    form_data.append('flavor', form.flavor.value);
+    form_data.append('service_name', form.service_name.value);
+    form_data.append('board', form.board.value);
+    var sliders = form.getElementsByTagName('paper-slider');
+    if (sliders.length > 0) {
+      form_data.append('target', sliders[0].value);
+    }
     request.open('POST', '{{ services_action_url }}', true);
-    request.send(FD);
+    request.send(form_data);
     loadServicesHtml();
   }
 </script>

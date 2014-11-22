@@ -5,20 +5,17 @@
       {{service.name}}
     </td>
     <td>
-      <b>
-        {% if service.status %}
-          On
-        {% else %}
-          Off
-        {% endif %}
-      </b>
-    </td>
-    <td>
       <form id='{{service.name}}' name='{{service.name}}'>
         <input type='hidden' name='board' value='{{service.board}}'>
         <input type='hidden' name='service_name' value='{{service.name}}'>
         <input type='hidden' name='flavor' value='{{service.flavor}}'>  
-        <input type='button' value='Toggle' onclick=servicesAction('{{service.name}}')>
+        {% if service.status %}
+          <paper-toggle-button checked=true
+                               onclick=servicesAction('{{service.name}}')></paper-toggle-button>
+        {% else %}
+          <paper-toggle-button checked=false
+                               onclick=servicesAction('{{service.name}}')></paper-toggle-button>
+        {% endif %}
       </form>
     </td>
   </tr>
@@ -41,15 +38,8 @@
         <input type='hidden' name='board' value='{{service.board}}'>
         <input type='hidden' name='service_name' value='{{service.name}}'>
         <input type='hidden' name='flavor' value='{{service.flavor}}'>  
-        <select name='target' onchange=servicesAction('{{service.name}}')>
-          {% for display, temp  in [('Off', 0), ('Cold', 60), ('Cool', 65), ('Warm', 70), ('Hot', 75)] %}
-            {% if temp == service.status[1] %}
-              <option value={{ temp }} selected>{{ display }}</option>
-            {% else %}
-              <option value={{ temp }}>{{ display }}</option>
-            {% endif %}
-          {% endfor %}
-        </select>
+        <paper-slider name='target' min=60 max=80 value={{service.status[1]}} pin editable 
+                      onchange="servicesAction('{{service.name}}')"></paper-slider>
       </form>
     </td>
   </tr>
